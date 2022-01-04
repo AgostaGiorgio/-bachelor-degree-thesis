@@ -1,0 +1,12 @@
+\begin{listing}[h]
+    \caption{Tempo che permette la ricezione del primo pacchetto CTS}
+    \label{code:setRxAfterWaken}
+    \begin{minted}[mathescape, linenos, numbersep=10pt, gobble=0, fontsize=\small, frame=lines, framesep=2mm]{cpp}
+
+setRxAfterWaken = 
+  + radioModule->transition[SLEEP][RX].delay
+  + radioModule->transition[SLEEP][TX].delay
+  + TIME_TO_SEND_CTS;
+
+    \end{minted}
+\end{listing}

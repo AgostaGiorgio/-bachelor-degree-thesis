@@ -1,0 +1,22 @@
+Durante questo periodo di tirocinio ho avuto modo di studiare la progettazione di protocolli innovativi per Wireless Sensor Networks, studiando vari aspetti e affrontando le varie problematiche sia a livello teorico che a livello pratico tramite delle simulazioni.\\
+Questo ha comportato una fase di studio iniziale delle problematiche delle reti wireless e IoT, non essendo questi temi compresi nei programmi dei corsi della laurea triennale. Ha poi richiesto lo studio della letteratura scientifica del settore per quanto riguarda in particolare protocolli proposti per WSN dotate di wake up radio e energy harvesting.\\
+
+Ho avuto modo di scoprire l'aspetto \textit{green} di queste reti, quindi ho potuto studiare tecnologie come quelle di wake-up e energy-harvesting capendo in che modo queste sono usate nell'ambito dell'IoT.\\
+
+Infine ho avuto modo di approfondire gli aspetti pratici e teorici del protocollo GreenWUP, cercando di trovare alcuni punti deboli e presentare, sia in teoria che in pratica, delle varianti di questo che potrebbero risolvere appunto questi problemi.\\
+In particolare ho presentato due varianti paragonando i risultati ottenuti singolarmente da queste con la versione base del protocollo, per poi unire le due proposte in un'unica soluzione e confrontando poi tutti i risultati.\\
+Durante questo lavoro di tirocinio, grazie a questo metodo di valutazione sperimentale e confronto prestazionale, è stato possibile vedere come reagiva il protocollo a determinati cambiamenti in modo da concentrare l'attenzione, durante la riprogettazione, su determinati aspetti invece che su altri. \\
+
+In particolare, alla luce dei risultati sopra ottenuti, possiamo notare che la prima soluzione, ovvero Auto-WakeUp, non ha riportato particolari miglioramenti rispetto alla versione base del protocollo. Più interessante invece è stata la seconda proposta, ovvero il Caching dei nodi relay selezionati. Quest'ultima, infatti, ha riportato dei miglioramenti più interessanti in termini di Energia consumata dai nodi della rete e ritardi di latenza.\\
+
+Alla luce di ciò credo che possa essere produttivo andare a modificare la logica di Relay-Selection (come è stato fatto per la variante Relay-Caching), usando magari logiche più complesse come \textit{Reinforcement learning}, piuttosto che andare ad operare su aspetti minori (come è stato invece fatto per la variante Auto-WakeUp). \\
+Modifiche come quest'ultima possono avere senso se abbinate a modifiche più importanti, come è stato fatto per la variante finale All-in-one. Questa variante, infatti, risulta essere la migliore in quanto risponde a tutte le inefficienze individuate mediante un'analisi approfondita dei risultati sperimentali e, combinando varie tecniche che affrontino i problemi individuati in modo sinergico, consente di goder di tutti i vantaggi ottenuti con le altre varianti.\\
+
+Mi sono quindi concentrato sull'ottimizzazione della variante All-in-One e, in particolare, di migliorare punti deboli come la staticità del numero di utilizzi di un nodo cached e la logica con cui si calcola il Jitter.\\
+\'E stata presentata infatti una nuova variante, \textit{All-in-One 2.0}, con cui sono stati rinforzati questi punti deboli riuscendo ad ottenere miglioramenti in tutte le metriche osservate.\\
+
+In fine si è analizzato nel dettaglio l'ultima versione, ovvero \textit{All-in-One 2.0}, studiando il comportamento cambiando parametri come il numero di nodi nella rete, la densità della rete, studiando come variano le prestazioni e aggiungendo eterogeneità tra i nodi cambiando sorgente di raccolta energia.\\
+
+Il lavoro svolto ha messo in evidenza il potenziale di ottimizzazione del protocollo. Altri studi potrebbero riguardare l'ottimizzazione automatica di alcuni parametri. Sarebbe inoltre interessante estendere il confronto prestazionale ad altri schemi presenti in letteratura.\\
+
+Sarebbe infine interessante, una volta ottimizzate al massimo le varianti proposte, sperimentare le prestazioni mediante un testbed in ambiente reale per reti IoT dotate di WakeUp Radio come quello ideato da SENSES Lab.

@@ -1,0 +1,44 @@
+Lo scenario di simulazione prevede un'area utile ai nodi di 100x100 metri su cui 139 dei 140 nodi totali sono distribuiti in modo randomico uniforme. \\
+Il sink node (per convenzione il nodo 0) è l'unico nodo della rete con posizione fissa, in particolare è posizionato al centro dell'area (x=50, y=50). \\
+Ovviamente il 100\% dei nodi è in grado di generare pacchetti DATA, fatta eccezione per il sink che si limita a riceverli.\\
+
+Il data rate del canale, per la radio principale,  è impostato a 250 Kbps. \\
+Il modello energetico considerato è quello del nodo sensoriale \textit{MagoNode}++\cite{magonode++}, ideato da SensesLab e basato sulla precedente versione \textit{MagoNode}\cite{magonode}, una piattaforma ideata per WSN che fornisce supporto a tecnologie di wake-up radio e di energy harvesting.\\
+
+Ogni nodo della rete ha 3 diverse modalità per l'antenna principale (e ognuna ovviamente prevede un consumo più o meno alto). In particolare vi è la modalità di invio (\textit{TX}), la modalità di ricezione (\textit{RX}) e la modalità in cui l'antenna consuma molto meno energia (\textit{SLEEP}). \\
+
+Per tutte le simulazioni effettuate, l'antenna principale è in grado di coprire un'area di raggio 60m, mentre per l'antenna di wake-up l'area coperta ha raggio 25m.
+Per quanto riguarda l'energy harvesting, vengono utilizzate delle celle solari che permettono appunto di accumulare energia. \'E possibile predire la quantità di energia accumulata da ogni nodo grazie a un sistema di energy prediction che, dopo un periodo di \textit{"training"} è in grado di fornire una stima affidabile dell'energia che sarà accumulata nel breve futuro.\\
+
+\begin{table}[h]
+    \setlength\doublerulesep{1mm} 
+    \begin{tabular}{ |p{8cm}|p{4cm}|  }
+        \hline
+        \multicolumn{2}{|c|}{\textbf{Parametri di simulazione}}\\
+        \hline \hline
+        \textbf{Parametro}  & \textbf{Valore}\\
+        \hline
+        Tempo di simulazione                            & 72h \\
+        Durata allenamento degli energy predictor       & 71h \\
+        Tempo utile allo scambio di pacchetti           & 1h \\
+        Nodi della rete                                 & 140 \\
+        Nodi che possono generare pacchetti Data        & 139 \\
+        Dimensione area di simulazione                  & 100 x 100 \textit{ mt\textsuperscript{2}}\\
+        Distribuzione dei nodi (1-139)                  & randomica uniforme \\
+        Posizione Sink (0)                              & coord(50, 50) \\
+        Jitter massimo previsto                         & 100ms \\
+        Piattaforma hardware                            & MagoNode++ \\
+        Raggio di azione radio principale               & 60mt \\
+        Raggio di azione radio wake-up                  & 25mt \\
+        Frequenza radio principale                      & 2.4GHz \\
+        Frequenza radio wake-up                         & 868MHz \\
+        Frequenza aggiornamento wake-up addresses       & 300s \\
+        Sorgente energetica esterna                     & Energia solare \\
+        Capacità massima delle batterie                 & 245000mA \\
+        \hline
+    \end{tabular}
+    \centering
+    \vspace*{5mm}
+    \caption{Tabella di configurazione delle simulazioni.}
+    \label{configs}
+\end{table}

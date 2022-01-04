@@ -1,0 +1,21 @@
+\begin{listing}[h]
+    \caption{Funzione che restituisce il corretto numero di ritrasmissioni per un nodo cached}
+    \label{code:getTxTimes_final2.0}
+    \begin{minted}[mathescape, linenos, numbersep=10pt, gobble=0, fontsize=\small, frame=lines, framesep=2mm]{cpp}
+
+int GreenWup::getTxTimes(double x) {
+  if( x <= maxTxCache ) return 6;
+  if( x >= minTxCache) return 1;
+
+  int n = 7;
+  double temp = maxTxCache;
+  
+  while(x > temp){
+    temp += factorTxCache;
+    n--;
+  }
+  return n;
+}
+
+    \end{minted}
+\end{listing}

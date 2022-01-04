@@ -1,0 +1,19 @@
+Questa particolare variante va a modificare la "\textit{logica}" del protocollo relativa al nodo \textit{sender} (ovvero il nodo che detiene un pacchetto DATA da esso generato o ricevuto precedentemente, che ora deve inoltrare verso il \textit{sink}). \\
+In particolare il nodo \textit{sender} è in grado di ricevere i vari CTS dai suoi vicini "svegliandosi da solo" poco prima della ricezione del primo pacchetto e di conseguenza non è più richiesto che i vari \textit{receiver} inviino prima un messaggio di wake up. \\
+
+Questa nuova procedura ha inizio subito dopo l'invio del pacchetto RTS da parte del sender. Infatti, dopo aver eseguito le classiche istruzioni previste dall'algoritmo base (tra cui il SET\_STATE a SLEEP della main radio ovviamente) si avvia un timer chiamato \textit{TURN\_ON\_MAIN\_RADIO} (\textbf{riga 5, Codice \ref{code:afterRTS}}).
+
+\input{Contents/code/autoWakeUp/RTSSent} \\
+
+Questo timer scatta dopo \textit{"setRxAfterWaken"} ms per cui è molto importante che questo tempo, in cui il nodo è in SLEEP, non sia nè troppo lungo (si perderebbero uno o più pacchetti CTS) nè troppo corto (il nodo starebbe per troppo tempo in RX sprecando energia inutilmente). \\
+In questa implementazione, il tempo che il nodo \textit{sender} aspetta prima di attivare la main radio, deve tener conto del tempo richiesto dal nodo per attivarsi in RX e del tempo richiesto da un potenziale \textit{relay} per attivarsi in TX, aspettare un tempo randomico chiamato \textit{jitter} (che varia da un minimo di 0 a un max definito come \textit{ctsMaxJitter}) e mandare il pacchetto CTS (formula finale in \textbf{Codice \ref{code:setRxAfterWaken}}).
+
+\input{Contents/code/autoWakeUp/InitiVariable} \\
+
+Una volta scattato questo timer, si imposta la main radio in RX e subito dopo si pianifica, tramite il timer \textit{"TIMER\_RX\_AFTER\_WUR"} (\textbf{riga 4, Codice \ref{code:turnOff}}), lo spegnimento della main radio.
+
+\input{Contents/code/autoWakeUp/TimerWakeUp} \\
+
+Questo timer scatta dopo \textit{"ctsMaxJitter"} in quanto dal momento dell'invio del pacchetto RTS, prima di attivare la main radio, il nodo \textit{sender} aspetta un tempo che considera i tempi necessari per l'invio del CTS con il minimo jitter possibile (0) per cui una volta passato questo tempo deve restare in RX mode per un tempo che permetta la ricezione di un pacchetto il quale jitter è stato massimo (ctsMaxJitter). \\
+
+Ovviamente nel momento in cui il nodo \textit{sender} riceve un CTS, questo elimina il timer \textit{"TIMER\_RX\_AFTER\_WUR"} e provvede a spegnere immediatamente l'antenna principale ignorando così tutti gli altri CTS e risparmiando di conseguenza energia. 

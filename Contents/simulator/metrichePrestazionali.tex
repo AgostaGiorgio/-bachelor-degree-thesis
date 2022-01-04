@@ -1,0 +1,21 @@
+Durante l'intero progetto, le varie proposte, così come la versione base del protocollo GreenWUP, sono state valutate osservando l'andamento delle seguenti metriche:
+
+\vspace{0.3em}
+
+\begin{itemize}
+    \itemsep0em
+    \item \emph{Tx Times}, definito come il tempo che ogni nodo, in media, passa con l'antenna di wake-up in modalità TX durante l'intera simulazione;
+    \item \emph{Energy Consuption}, definita come l'energia totale spesa da ciascun nodo della rete per l'invio e la ricezione dei vari pacchetti DATA e di controllo, con la sola eccezione del sink node;
+    \item \emph{End-to-End Latency}, definita come il tempo che un pacchetto impiega dal momento in cui è stato generato fino al raggiungimento del sink node;
+    \item \emph{Packet Delivery Ratio}, definita come la percentuale di pacchetti DATA ricevuti correttamente dal sink node sul totale dei pacchetti DATA generati dai vari nodi della rete;
+\end{itemize}
+
+\\\\
+
+Ovviamente l'obbiettivo è quello di migliorare il più possibile questi valori e in particolare:
+\begin{itemize}
+    \item Minimizzare il tempo speso con la wake-up radio in modalità TX;
+    \item Minimizzare l'energia totale spesa dalla rete;
+    \item Minimizzare il tempo impiegato da un pacchetto per raggiungere il sink node;
+    \item Massimizzare la percentuale di pacchetti DATA ricevuti correttamente dal sink node.
+\end{itemize}

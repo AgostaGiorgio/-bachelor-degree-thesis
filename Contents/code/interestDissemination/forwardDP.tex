@@ -1,0 +1,25 @@
+\begin{listing}[h]
+    \caption{Procedura usata dai nodi per la gestione del DisseminationPacket}
+    \label{code:forwardDP}
+    \begin{minted}[mathescape, linenos, numbersep=10pt, gobble=0, fontsize=\small, frame=lines, framesep=2mm]{cpp}
+
+GreenWupInterest *macPkt = dynamic_cast <GreenWupInterest*>(pkt);
+
+updateLevel ( macPkt->getHc() );
+
+if ( isNotDuplicatePacket(pkt) == false ){
+  collectOutput("MAC", "Duplicated packets");
+  return;
+}
+
+GreenWupInterest *newPkt = dynamic_cast <GreenWupInterest*>(pkt->dup());
+newPkt->setHc(level);
+
+wurModule->removeWakeupAddress( wurDisseminationAddresses[addressIndex] );
+
+int size = wurDisseminationAddresses.size();
+addressIndex = ( addressIndex + 1 ) % ( size );
+wurModule->addWakeupAddress( wurDisseminationAddresses[addressIndex] );
+
+    \end{minted}
+\end{listing}

@@ -1,0 +1,21 @@
+\begin{listing}[h]
+    \caption{Scelta tra invio mediante relay o invio classico}
+    \label{code:checkForRelay}
+    \begin{minted}[mathescape, linenos, numbersep=10pt, gobble=0, fontsize=\small, frame=lines, framesep=2mm]{cpp}
+
+if( relayCachedAddress != -1 && 
+  txTimes_Cached < txBeforeChangingRelayCached){
+	
+  txTimes_Cached++;
+  relayAddress = relayCachedAddress;	
+  setState(MAC_STATE_SENDING_DATA);
+
+  sendWurAddress( relayCachedWurAddress);
+} else {
+  txTimes_Cached = 0;
+		
+  # scambio RTS/CTS come da versione base #
+}
+
+    \end{minted}
+\end{listing}

@@ -1,0 +1,53 @@
+Con questa variante si agisce ancora una volta principalmente sui nodi \textit{sender}.\\
+Infatti, i vari nodi della rete hanno la possibilità di memorizzare l'ultimo vicino scelto come next-hop in precedenza e sceglierlo nuovamente per inoltrare un eventuale nuovo dato evitando, di fatto, il classico scambio di pacchetti RTS/CTS che invece avviene per ogni pacchetto data nella versione base del protocollo.\\
+
+L'idea nasce dopo un'attenta analisi di molte simulazioni (eseguite su diversi scenari) del protocollo GreenWUP base. In particolare, dai risultati di queste simulazioni, si nota che difficilmente un nodo \textit{x} invia un primo pacchetto data a un nodo \textit{y} e successivamente invia un altro pacchetto data a un nodo \textit{z}. Infatti quello che succede nella larghissima maggioranza dei casi analizzati è che i nodi tendono a scegliere tra i vicini sempre gli stessi next-hop.\\
+Ovviamente non è sempre così, infatti, potrebbe capitare che il vicino appena scelto non può essere riscelto perché non è più disponibile o perché è impegnato nella gestione di un altro pacchetto.\\
+
+Tuttavia, l'uso per un periodo di tempo dello stesso next hop, è quanto solitamente accade e questo è motivato dagli stessi criteri di scelta del next hop relay basati su una metrica (l'hop count) che varia molto lentamente e su metriche prestazionali dinamiche, quali la classe di energia residua, che comunque richiedono un certo tempo prima che si creino delle significative modifiche. Ha quindi senso esplorare la possibilità di ridurre i processi di selezione del next hop relay, utilizzando il caching della selezione, magari perdendo in ottimalità in sporadiche scelte di relay.\\
+\\
+Per l'implementazione di questa nuova funzionalità sono state definite delle nuove variabili:
+\input{Contents/code/relayCaching/InitiVariable}\\
+Queste nuove variabili sopra definite rappresentano rispettivamente :
+\begin{enumerate}
+    \item Il numero di volte in cui c'è stata una trasmissione verso il nodo cached 
+    \item Il numero massimo di trasmissioni consentite verso il nodo cached
+    \item L'indirizzo univoco di wake-up del nodo cached
+    \item L'ID in rete del nodo cached
+\end{enumerate}
+\\
+Si è scelto di fissare un numero massimo di invii mediante l'utilizzo del nodo cached (\textit{txBeforeChangingRelayCached}) in quanto utilizzando molte volte i vicini che i vari sender hanno in cache, questi rischiano di terminare l'energia a disposizione prima rispetto agli altri nodi. Imponendo un numero massimo di utilizzi, ovviamente si va a regolare un minimo l'utilizzo del caching affinché non si proceda sempre verso lo stesso percorso e cercando di ottenere un consumo energetico più omogeneo possibile tra i vari nodi della rete. In particolare si permette la trasmissione verso il nodo cached per un massimo di 3 volte \footnote{Valore ottimizzato dopo svariate simulazioni con diverse quantità}.\\
+
+La variabile \textit{txBeforeChangingRelayCached}, inoltre, non comprende solo gli invii di pacchetti data usando il nodo cached, ma comprende in generale tutte le trasmissioni verso il nodo cached.\\
+Potrebbe infatti succedere che un nodo cached non sia raggiungibile (per motivi legati all'energia residua o altri). In questo caso, ovviamente, il nodo sender ritenta l'invio un numero \textit{x} di volte.\\
+Accumulando in una stessa variabile (\textit{txTimes\_Cached}) sia gli invii riusciti che le eventuali ritrasmissioni si riesce a "scoraggiare" l'invio verso quel vicino.\\
+
+Ovviamente quando \textit{txTimes\_Cached} supera in valore \textit{txBeforeChangingRelayCached} si procede esattamente come il protocollo base prevede, ovvero, con lo scambio di RTS e CTS.\\
+
+La nuova procedura ha inizio poco prima dell'invio del primo messaggio di wake-up in broadcast prima dell'RTS da parte del sender.
+
+\input{Contents/code/relayCaching/checkForRelay} \\
+
+Con la nuova funzionalità, prima di inviare il messaggio di wake-up in broadcast e procedere con lo scambio di RTS/CTS, il nodo controlla che non sia presente un nodo in cache (\textbf{riga 1, Codice \ref{code:checkForRelay}}) e che non siano state superate le trasmissioni massime verso questo (\textbf{riga 2, Codice \ref{code:checkForRelay}}).\\
+\\
+Se così fosse, incrementa il numero di trasmissioni effettuate e procede con l'inivio del messaggio di wake-up usando l'indirizzo di wake-up univoco del nodo cached.\\
+
+Ovviamente, durante l'invio del primo pacchetto data gestito da un determinato nodo \textit{x}, non sarà presente nessun nodo in cache per cui si procede con lo scambio classico dei pacchetti RTS/CTS.\\
+Alla ricezione del primo pacchetto CTS (e quindi quando normalmente un sender sceglie il next-hop), il nodo provvede a memorizzare informazioni quali indirizzo di wake-up univoco e ID in rete del nodo che ha inviato il CTS.
+
+\input{Contents/code/relayCaching/cachingNode} \\
+
+Dall'altra parte, invece, i vicini del nodo sender devono essere in grado di capire quando sono svegliati dalla procedura di scambio RTS/CTS oppure sono stati svegliati in qualità di nodi cached.\\
+Per capire se un nodo è stato cached, ogni volta che questo riceve un messaggio di wake-up controlla che l'indirizzo di wake-up corrisponda al suo indirizzo di wake-up univoco e inoltre deve trovarsi nello stato: \textit{MAC\_STATE\_IDLE}. \\
+Se tutte le condizioni sono rispettate, il nodo imposta il proprio stato in \textit{MAC\_STA-} \textit{TE\_WAIT\_FOR\_DATA}.
+
+\input{Contents/code/relayCaching/detectWUM} \\
+
+Quest'ultima condizione è necessaria in quanto potrebbero esserci dei problemi quando un nodo sender avvia la procedura di scambio RTS/CTS e riceve il messaggio di wake-up che preannuncia un CTS. Se non ci fosse questa condizione, il nodo sender setterebbe il proprio stato in \textit{MAC\_STATE\_WAIT\_FOR\_DATA}, ignorando il pacchetto CTS ricevuto. \\
+
+Altro problema che potrebbe avere un nodo cached è che non avendo ricevuto prima del pacchetto data il classico RTS, non sa effettivamente da chi sta per ricevere quest'ultimo pacchetto, per cui non sarebbe in grado di inviare poi l'acknowledgement al nodo sender.\\
+Per fare ciò, un nodo che riceve un pacchetto data effettua un controllo molto semplice sulle variabili che dovrebbero contenere le informazioni relative al nodo sender e nel caso le imposta prendendole dal pacchetto data appena ricevuto.
+
+\input{Contents/code/relayCaching/setForACK} \\
+
+\'E molto importante che la variabile \textit{senderAddress} sia uguale a -1 in quanto questo evita di prendere in considerazione pacchetti data che in realtà non sono destinati a quel nodo. Infatti nel caso della procedura di invio con il nodo cached, questo sarà in \textit{WAIT\_FOR\_DATA} e non avrà le informazioni relative al sender; nel caso invece della classica procedura, quando un nodo relay sta in \textit{WAIT\_FOR\_DATA} conosce già chi sta per mandare il pacchetto data (avendo ricevuto il pacchetto RTS).

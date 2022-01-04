@@ -1,0 +1,24 @@
+\begin{listing}[h]
+    \caption{Procedura usata dal Sink per creare un nuovo DisseminationPacket}
+    \label{code:createDP}
+    \begin{minted}[mathescape, linenos, numbersep=10pt, gobble=0, fontsize=\small, frame=lines, framesep=2mm]{cpp}
+
+GreenWupPacket* macFrame;
+macFrame = new GreenWupInterest("GreenWupInterest", MAC_LAYER_PACKET);
+
+// Informazioni per DisseminationPacket
+macFrame->setWurAddress(wurDisseminationAddresses[fromNetAddressIndex]);
+macFrame->setType( PKT_GREEN_WUP_INTEREST );
+macFrame->setHc(level);
+int size = wurDisseminationAddresses.size();
+fromNetAddressIndex = ( fromNetAddressIndex + 1 ) % ( size );
+
+// Informazioni Generiche
+encapsulatePacket(macFrame, pkt);
+macFrame->setDestination(destination);
+macFrame->setNetAddress(self);
+macFrame->setNetSN(netSN++);
+macFrame->setSource(SELF_MAC_ADDRESS);
+
+    \end{minted}
+\end{listing}

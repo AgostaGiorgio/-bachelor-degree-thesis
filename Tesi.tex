@@ -1,0 +1,107 @@
+% !TeX encoding = UTF-8
+% !TeX program = pdflatex
+% !TeX spellcheck = it_IT
+
+\documentclass[binding=0.6cm,TFA,noexaminfo]{sapthesis}
+ 
+\usepackage{microtype}
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\usepackage[nottoc]{tocbibind}
+
+\usepackage{afterpage}
+
+\newcommand\blankpage{
+    \null
+    \thispagestyle{empty}
+    \newpage
+}
+
+\usepackage{listings}
+\usepackage{dirtytalk}
+\usepackage{xcolor}
+\lstset { %
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+}
+\usepackage[chapter]{minted}
+
+\renewcommand\listingscaption{Codice}
+
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+
+\usepackage{hyperref}
+\hypersetup{pdftitle={TesiTriennale_1795537},pdfauthor={Giorgio Agosta}}
+
+% Remove in a normal thesis
+\usepackage{lipsum}
+\usepackage{curve2e}
+\definecolor{gray}{gray}{0.4}
+\newcommand{\bs}{\textbackslash}
+
+% Commands for the titlepage
+\title{Sviluppo di Soluzioni per Reti IoT\\ Dotate di Wake Up Radio}
+\author{Giorgio Agosta}
+\IDnumber{1795537}
+\course{Informatica L-31}
+\courseorganizer{Facoltà di Ingegneria dell'informazione, Informatica e Statistica}
+\AcademicYear{2019/2020}
+\submitdate{2019/2020}
+\copyyear{2020}
+\advisor{Prof. Chiara Petrioli}
+\coadvisor{Dr. Georgia Koutsandria}
+\authoremail{agostagiorgio6@gmail.com}
+
+\examdate{gg Ottobre 2020}
+\examiner{Prof. Nome Cognome}
+\examiner{Prof. Nome Cognome}
+\examiner{Dr. Nome Cognome}
+
+\versiondate{\today}
+
+\begin{document}
+
+\frontmatter
+
+\maketitle
+
+\begin{acknowledgments}
+\input{Contents/ringraziamenti.tex}
+\end{acknowledgments}
+
+\tableofcontents
+
+\mainmatter
+
+\clearpage
+
+\chapter{Introduzione}
+\input{Contents/introduzione}
+
+\chapter{GreenWUP}
+\input{Contents/greenWUP}
+
+\chapter{Modifiche e Varianti}
+\input{Contents/modificheVarianti}
+
+\chapter{Valutazione Prestazionale}
+\input{Contents/simulatore}
+\newpage
+\input{Contents/risultati}
+\newpage
+\input{Contents/analisiFinal2.0}
+
+\chapter{Conclusioni}
+\input{Contents/conclusioni}
+
+\bibliographystyle{siam}
+\bibliography{Contents/bibliography}
+
+\end{document}

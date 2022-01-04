@@ -1,0 +1,15 @@
+\begin{listing}[h]
+    \caption{Procedura con cui un nodo cached riconosce il nodo sender}
+    \label{code:setForACK}
+    \begin{minted}[mathescape, linenos, numbersep=10pt, gobble=0, fontsize=\small, frame=lines, framesep=2mm]{cpp}
+
+if( genericPkt->getSource() != senderAddress && 
+    !isSink && 
+    senderAddress == -1 ){
+
+  senderWurAddress = genericPkt->getWurAddress();
+  senderAddress = genericPkt->getSource();
+}
+
+    \end{minted}
+\end{listing}

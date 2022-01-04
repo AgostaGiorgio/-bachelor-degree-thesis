@@ -1,0 +1,15 @@
+\begin{listing}[h]
+    \caption{Avvio timer per svegliarsi da solo}
+    \label{code:afterRTS}
+    \begin{minted}[mathescape, linenos, numbersep=10pt, gobble=0, fontsize=\small, frame=lines, framesep=2mm]{cpp}
+
+case PKT_GREEN_WUP_RTS: {
+  .
+  .  altre operazioni 
+  .
+  setTimer(TURN_ON_MAIN_RADIO, setRxAfterWaken);
+  break;
+}
+
+    \end{minted}
+\end{listing}
